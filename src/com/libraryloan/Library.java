@@ -5,10 +5,40 @@
  */
 package com.libraryloan;
 
+import java.util.List;
+
 /**
  *
  * @author nemus
  */
 public class Library {
     
+    private BookDAO bookDAO;
+    
+    public Library(BookDAO bookDAO){
+        this.bookDAO=bookDAO;
+    }
+    public void addNewBook(String name, List<String>authors, int year){
+        // probaj da ubacis new Book(name ,authors, year)
+        Book book = new Book();
+        book.setAvailable(true);
+        book.setName(name);
+        book.setAuthors(authors);
+        book.setPublishedYear(year);
+        bookDAO.insertBook(book);
+    }
+    public void loanBook(long uniqueID){
+       List<Book> books = bookDAO.findBookByProperty(BookSearchType.ID, uniqueID);
+       if(books.size() > 0){
+           books.get(0).setAvailable(false);
+           bookDAO.updateBook(books.get(0));
+       }
+    }
+    public void returnBook(long uniqueID){
+         List<Book> books = bookDAO.findBookByProperty(BookSearchType.ID, uniqueID);
+       if(books.size() > 0){
+           books.get(0).setAvailable(true);
+           bookDAO.updateBook(books.get(0));
+       }
+    }
 }
