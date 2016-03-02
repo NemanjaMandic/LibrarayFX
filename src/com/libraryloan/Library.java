@@ -18,7 +18,7 @@ public class Library {
     public Library(BookDAO bookDAO){
         this.bookDAO=bookDAO;
     }
-    public void addNewBook(String name, List<String>authors, int year){
+    public void addNewBook(String name, String authors, int year){
         // probaj da ubacis new Book(name ,authors, year)
         Book book = new Book();
         book.setAvailable(true);

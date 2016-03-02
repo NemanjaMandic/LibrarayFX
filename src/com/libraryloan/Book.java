@@ -5,6 +5,7 @@
  */
 package com.libraryloan;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,15 +58,15 @@ public class Book {
     /**
      * @return the authors
      */
-    public List<String> getAuthors() {
-        return authors;
+    public String getAuthors() {
+        String result = "";
+        for (String author : authors)
+            result += author + "_";
+        return result.substring(0, result.length() - 1);
     }
 
-    /**
-     * @param authors the authors to set
-     */
-    public void setAuthors(List<String> authors) {
-        this.authors = authors;
+    public void setAuthors(String authors) {
+        this.authors = Arrays.asList(authors.split("_"));
     }
 
     /**
