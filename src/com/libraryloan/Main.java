@@ -5,6 +5,8 @@
  */
 package com.libraryloan;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,13 +19,27 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
     
+    private BookDAO buildDAO(){
+        return new DerbyBookDAO();
+    }
+    private Library buildModel(){
+        try {
+            return new Library(buildDAO());
+        } catch (Exception ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    private BookController buildController(Stage stage){
+        return new BookController(buildModel(), stage);
+    }
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Book.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Book.fxml"));
+        loader.setControllerFactory(t -> buildController(stage));
         
-        Scene scene = new Scene(root);
         
-        stage.setScene(scene);
+        stage.setScene(new Scene(loader.load()));
         stage.show();
     }
 

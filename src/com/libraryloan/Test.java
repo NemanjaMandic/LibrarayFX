@@ -5,6 +5,9 @@
  */
 package com.libraryloan;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author nemus
@@ -15,7 +18,12 @@ public class Test {
         return new DerbyBookDAO();
     }
     private Library buildModel(){
-        return new Library(buildDAO());
+        try {
+            return new Library(buildDAO());
+        } catch (Exception ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     public static void main(String[] args) throws Exception{
         BookDAO book = new DerbyBookDAO();

@@ -6,6 +6,8 @@
 package com.libraryloan;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,8 +17,9 @@ public class Library {
     
     private BookDAO bookDAO;
     
-    public Library(BookDAO bookDAO){
+    public Library(BookDAO bookDAO) throws Exception{
         this.bookDAO=bookDAO;
+        bookDAO.connect();
     }
     public void addNewBook(String name, String authors, int year){
         // probaj da ubacis new Book(name ,authors, year)
@@ -40,5 +43,17 @@ public class Library {
            books.get(0).setAvailable(true);
            bookDAO.updateBook(books.get(0));
        }
+    }
+    
+    public List<Book> search(BookSearchType searchType, String value){
+        return bookDAO.findBookByProperty(searchType, value);
+    }
+    public void close(){
+        try {
+            bookDAO.close();
+        } catch (Exception ex) {
+            System.out.println("Error!");
+            ex.printStackTrace();
+        }
     }
 }
